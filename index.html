@@ -197,6 +197,117 @@ h1,h2,h3,h4{font-family:var(--display);line-height:1.08;letter-spacing:-.02em;co
 .fac-b p+p{margin-top:6px}
 .fac-b svg{width:16px;height:16px;color:var(--blue);flex:none}
 
+  /* FACULTY SECTION */
+
+.faculty-section {
+  padding: 90px 6%;
+  background: #f8fafc;
+}
+
+.faculty-section .container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-tag {
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.section-heading h2 {
+  font-size: 36px;
+  color: #111827;
+  margin: 12px 0;
+}
+
+.section-heading p {
+  color: #64748b;
+  font-size: 15px;
+}
+
+.faculty-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.faculty-card {
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 18px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  transition: 0.3s ease;
+}
+
+.faculty-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.faculty-image {
+  width: 135px;
+  height: 135px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #dbeafe;
+}
+
+.faculty-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.faculty-card h3 {
+  color: #111827;
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+.faculty-qualification {
+  display: inline-block;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.faculty-card p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .faculty-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .faculty-section {
+    padding: 60px 5%;
+  }
+
+  .faculty-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading h2 {
+    font-size: 28px;
+  }
+}
 /* testimonials */
 .testi{background:var(--bg)}
 .testi-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:44px}
@@ -607,21 +718,58 @@ footer ul a:hover{color:#fff;padding-left:4px}
 </section>
 
 <!-- FACULTY -->
-<section class="sec" id="faculty">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Learn From Experienced Mentors</h2>
-      <p>Teachers who explain patiently and track every student's progress.</p>
+
+<!-- FACULTY SECTION -->
+<section class="faculty-section" id="faculty">
+  <div class="container">
+
+    <div class="section-heading">
+      <span class="section-tag">OUR EDUCATORS</span>
+      <h2>Meet Our Expert Faculty</h2>
+      <p>Learn from experienced educators dedicated to your success.</p>
     </div>
-    <div class="fac-grid">
-      <article class="fac"><div class="photo"><em>Photo</em><svg viewBox="0 0 200 180"><use href="#i-person"/></svg></div><div class="fac-b"><h3>Rahul Sharma</h3><div class="subj">Mathematics Faculty</div><p><svg><use href="#i-cap"/></svg>M.Sc. Mathematics</p><p><svg><use href="#i-clock"/></svg>8+ Years Experience</p></div></article>
-      <article class="fac"><div class="photo"><em>Photo</em><svg viewBox="0 0 200 180"><use href="#i-person"/></svg></div><div class="fac-b"><h3>Neha Verma</h3><div class="subj">Physics Faculty</div><p><svg><use href="#i-cap"/></svg>M.Sc. Physics, B.Ed.</p><p><svg><use href="#i-clock"/></svg>7+ Years Experience</p></div></article>
-      <article class="fac"><div class="photo"><em>Photo</em><svg viewBox="0 0 200 180"><use href="#i-person"/></svg></div><div class="fac-b"><h3>Amit Desai</h3><div class="subj">Chemistry Faculty</div><p><svg><use href="#i-cap"/></svg>M.Sc. Chemistry</p><p><svg><use href="#i-clock"/></svg>10+ Years Experience</p></div></article>
-      <article class="fac"><div class="photo"><em>Photo</em><svg viewBox="0 0 200 180"><use href="#i-person"/></svg></div><div class="fac-b"><h3>Priya Nair</h3><div class="subj">Science &amp; Biology Faculty</div><p><svg><use href="#i-cap"/></svg>M.Sc. Life Sciences</p><p><svg><use href="#i-clock"/></svg>6+ Years Experience</p></div></article>
+
+    <div class="faculty-grid">
+
+      <div class="faculty-card">
+        <div class="faculty-image">
+          <img src="images/faculty.jpg" alt="Faculty Member">
+        </div>
+        <h3>Farukh Khan</h3>
+        <span class="faculty-qualification">M.Sc. / B.Ed.</span>
+        <p>Mathematics Expert</p>
+      </div>
+
+      <div class="faculty-card">
+        <div class="faculty-image">
+          <img src="images/faculty.jpg" alt="Faculty Member">
+        </div>
+        <h3>Aman Sharma</h3>
+        <span class="faculty-qualification">M.Sc. / B.Ed.</span>
+        <p>Science Expert</p>
+      </div>
+
+      <div class="faculty-card">
+        <div class="faculty-image">
+          <img src="images/faculty.jpg" alt="Faculty Member">
+        </div>
+        <h3>Pahul Sharma</h3>
+        <span class="faculty-qualification">M.A. / B.Ed.</span>
+        <p>English Expert</p>
+      </div>
+
+      <div class="faculty-card">
+        <div class="faculty-image">
+          <img src="images/faculty.jpg" alt="Faculty Member">
+        </div>
+        <h3>Rahul Sharma</h3>
+        <span class="faculty-qualification">M.Sc. / B.Ed.</span>
+        <p>Physics & Chemistry Expert</p>
+      </div>
+
     </div>
   </div>
 </section>
-
 <!-- TESTIMONIALS -->
 <section class="sec testi">
   <div class="wrap">
