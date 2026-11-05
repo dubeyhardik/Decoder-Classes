@@ -846,6 +846,7 @@ footer ul a:hover{color:#fff;padding-left:4px}
 
   /* Enquiry form (demo: client-side validation only) */
   /* Enquiry form → WhatsApp */
+  /* WhatsApp Enquiry Form */
 var form = document.getElementById('form');
 
 form.addEventListener('submit', function(e) {
@@ -872,35 +873,36 @@ form.addEventListener('submit', function(e) {
         return;
     }
 
-    // Collect form details
-    var student = document.getElementById('sn').value.trim();
-    var parent = document.getElementById('pn').value.trim();
-    var mobile = document.getElementById('mn').value.trim();
+    var student = document.getElementById('sn').value;
+    var parent = document.getElementById('pn').value;
+    var mobile = document.getElementById('mn').value;
     var studentClass = document.getElementById('cl').value;
-    var course = document.getElementById('co').value || 'Not selected';
-    var batch = document.getElementById('ba').value || 'Not selected';
-    var message = document.getElementById('ms').value.trim() || 'None';
+    var course = document.getElementById('co').value;
+    var batch = document.getElementById('ba').value;
+    var message = document.getElementById('ms').value;
 
-    // WhatsApp message
-    var text = 
-`Hello Decoder Classes!
+    var whatsappMessage =
+        "Hello Decoder Classes!\n\n" +
+        "*New Admission Enquiry*\n\n" +
+        "Student Name: " + student + "\n" +
+        "Parent Name: " + parent + "\n" +
+        "Mobile: " + mobile + "\n" +
+        "Class: " + studentClass + "\n" +
+        "Course: " + (course || "Not selected") + "\n" +
+        "Preferred Batch: " + (batch || "Not selected") + "\n" +
+        "Message: " + (message || "None") + "\n\n" +
+        "I would like to know more about admission.";
 
-I want to enquire about admission.
-
-Student Name: ${student}
-Parent Name: ${parent}
-Mobile Number: ${mobile}
-Class: ${studentClass}
-Course: ${course}
-Preferred Batch: ${batch}
-Message: ${message}
-
-Please contact me regarding admission.`;
-
-    // Redirect to WhatsApp
-    var whatsappURL = 'https://wa.me/917490913399?text=' + encodeURIComponent(text);
+    var whatsappURL =
+        "https://wa.me/919999999999?text=" +
+        encodeURIComponent(whatsappMessage);
 
     window.location.href = whatsappURL;
+});
+
+document.getElementById('mn').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '');
+});
 });
 </script>
 </body>
