@@ -776,134 +776,289 @@ footer ul a:hover{color:#fff;padding-left:4px}
   <a class="call" href="tel:+910000000000"><svg><use href="#i-phone"/></svg>Call Now</a>
   <a class="wa" href="https://wa.me/910000000000"><svg><use href="#i-wa"/></svg>WhatsApp</a>
 </nav>
-
 <script>
-(function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function () {
+  var reduce = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
 
-  /* Hero headline: build two lines, decode "Potential" once on load */
+  /* Hero headline animation */
   var h1 = document.querySelector('.hero h1');
-  h1.innerHTML = 'Decode Your <span class="hl" id="decode" aria-hidden="true">Potential</span>.<span class="fut">Build Your Future.</span>';
-  h1.setAttribute('aria-label','Decode Your Potential. Build Your Future.');
-  var el = document.getElementById('decode'), final = 'Potential';
-  if(!reduce){
-    var chars='01{}<>/=+∑π√∫%#', start=null, dur=1100;
-    el.style.minWidth = el.offsetWidth+'px';
-    function frame(t){
-      if(!start) start=t;
-      var p=Math.min((t-start)/dur,1), done=Math.floor(p*final.length), out='';
-      for(var i=0;i<final.length;i++){ out += i<done ? final[i] : chars[Math.floor(Math.random()*chars.length)]; }
-      el.textContent = out;
-      if(p<1) requestAnimationFrame(frame); else el.textContent = final;
+
+  h1.innerHTML =
+    'Decode Your <span class="hl" id="decode">Potential</span>.' +
+    '<span class="fut">Build Your Future.</span>';
+
+  h1.setAttribute(
+    'aria-label',
+    'Decode Your Potential. Build Your Future.'
+  );
+
+  var el = document.getElementById('decode');
+  var final = 'Potential';
+
+  if (!reduce) {
+    var chars = '01{}<>/=+∑π√∫%#';
+    var start = null;
+    var duration = 1100;
+
+    el.style.minWidth = el.offsetWidth + 'px';
+
+    function frame(t) {
+      if (!start) start = t;
+
+      var p = Math.min((t - start) / duration, 1);
+      var done = Math.floor(p * final.length);
+      var output = '';
+
+      for (var i = 0; i < final.length; i++) {
+        output += i < done
+          ? final[i]
+          : chars[Math.floor(Math.random() * chars.length)];
+      }
+
+      el.textContent = output;
+
+      if (p < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        el.textContent = final;
+      }
     }
+
     requestAnimationFrame(frame);
   }
 
-  /* Nav scroll + mobile menu */
-  var nav=document.getElementById('nav'), burger=document.getElementById('burger'), menu=document.getElementById('menu');
-  function onScroll(){ nav.classList.toggle('scrolled', window.scrollY>30); }
-  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
-  function setMenu(open){ menu.classList.toggle('show',open); nav.classList.toggle('open',open); burger.setAttribute('aria-expanded',open); burger.setAttribute('aria-label',open?'Close menu':'Open menu'); }
-  burger.addEventListener('click',function(){ setMenu(!menu.classList.contains('show')); });
-  menu.addEventListener('click',function(e){ if(e.target.tagName==='A') setMenu(false); });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') setMenu(false); });
+  /* Navigation */
+  var nav = document.getElementById('nav');
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('menu');
 
-  /* Count-up on viewport entry */
-  var counters=document.querySelectorAll('[data-count]');
-  function run(n){
-    var end=parseFloat(n.dataset.count), dec=parseInt(n.dataset.dec||0,10), suf=n.dataset.suffix||'';
-    if(reduce){ n.textContent=end.toFixed(dec)+suf; return; }
-    var s=null, d=1400;
-    function step(t){ if(!s)s=t; var p=Math.min((t-s)/d,1), e=1-Math.pow(1-p,3); n.textContent=(end*e).toFixed(dec)+suf; if(p<1)requestAnimationFrame(step); }
+  function onScroll() {
+    nav.classList.toggle('scrolled', window.scrollY > 30);
+  }
+
+  onScroll();
+
+  window.addEventListener('scroll', onScroll, {
+    passive: true
+  });
+
+  function setMenu(open) {
+    menu.classList.toggle('show', open);
+    nav.classList.toggle('open', open);
+
+    burger.setAttribute('aria-expanded', open);
+    burger.setAttribute(
+      'aria-label',
+      open ? 'Close menu' : 'Open menu'
+    );
+  }
+
+  burger.addEventListener('click', function () {
+    setMenu(!menu.classList.contains('show'));
+  });
+
+  menu.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') {
+      setMenu(false);
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setMenu(false);
+  });
+
+  /* Count-up animation */
+  var counters = document.querySelectorAll('[data-count]');
+
+  function run(n) {
+    var end = parseFloat(n.dataset.count);
+    var dec = parseInt(n.dataset.dec || 0, 10);
+    var suffix = n.dataset.suffix || '';
+
+    if (reduce) {
+      n.textContent = end.toFixed(dec) + suffix;
+      return;
+    }
+
+    var start = null;
+    var duration = 1400;
+
+    function step(t) {
+      if (!start) start = t;
+
+      var p = Math.min((t - start) / duration, 1);
+      var easing = 1 - Math.pow(1 - p, 3);
+
+      n.textContent =
+        (end * easing).toFixed(dec) + suffix;
+
+      if (p < 1) {
+        requestAnimationFrame(step);
+      }
+    }
+
     requestAnimationFrame(step);
   }
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ run(e.target); io.unobserve(e.target);} }); },{threshold:.6});
-    counters.forEach(function(c){ io.observe(c); });
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          run(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+
+    counters.forEach(function (counter) {
+      io.observe(counter);
+    });
   }
 
   /* Testimonial slider */
-  var track=document.getElementById('track');
-  function slide(dir){ var c=track.querySelector('.tcard'); track.scrollBy({left:dir*(c.offsetWidth+22),behavior:reduce?'auto':'smooth'}); }
-  document.getElementById('prev').addEventListener('click',function(){ slide(-1); });
-  document.getElementById('next').addEventListener('click',function(){ slide(1); });
+  var track = document.getElementById('track');
+
+  function slide(direction) {
+    var card = track.querySelector('.tcard');
+
+    track.scrollBy({
+      left: direction * (card.offsetWidth + 22),
+      behavior: reduce ? 'auto' : 'smooth'
+    });
+  }
+
+  document.getElementById('prev').addEventListener(
+    'click',
+    function () {
+      slide(-1);
+    }
+  );
+
+  document.getElementById('next').addEventListener(
+    'click',
+    function () {
+      slide(1);
+    }
+  );
 
   /* Gallery filter */
-  var filters=document.getElementById('filters');
-  filters.addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b) return;
-    filters.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on',x===b); });
-    var f=b.dataset.f;
-    document.querySelectorAll('#gal .g').forEach(function(g){ g.classList.toggle('hide', f!=='all' && g.dataset.c!==f); });
+  var filters = document.getElementById('filters');
+
+  filters.addEventListener('click', function (e) {
+    var button = e.target.closest('button');
+
+    if (!button) return;
+
+    filters.querySelectorAll('button').forEach(function (b) {
+      b.classList.toggle('on', b === button);
+    });
+
+    var filter = button.dataset.f;
+
+    document.querySelectorAll('#gal .g').forEach(function (item) {
+      item.classList.toggle(
+        'hide',
+        filter !== 'all' && item.dataset.c !== filter
+      );
+    });
   });
 
   /* FAQ accordion */
-  document.getElementById('acc').addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b) return;
-    var qa=b.parentElement, open=!qa.classList.contains('open');
-    qa.classList.toggle('open',open); b.setAttribute('aria-expanded',open);
-  });
+  document.getElementById('acc').addEventListener(
+    'click',
+    function (e) {
+      var button = e.target.closest('button');
 
-  /* Enquiry form (demo: client-side validation only) */
-  /* Enquiry form → WhatsApp */
-  /* WhatsApp Enquiry Form */
-var form = document.getElementById('form');
+      if (!button) return;
 
-form.addEventListener('submit', function(e) {
+      var qa = button.parentElement;
+      var open = !qa.classList.contains('open');
+
+      qa.classList.toggle('open', open);
+      button.setAttribute('aria-expanded', open);
+    }
+  );
+
+  /* WhatsApp enquiry form */
+  var form = document.getElementById('form');
+
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    var ok = true;
+    var ids = ['sn', 'pn', 'mn', 'cl'];
+    var valid = true;
 
-    ['sn', 'pn', 'mn', 'cl'].forEach(function(id) {
-        var i = document.getElementById(id);
-        var v = i.value.trim();
-        var good = !!v;
+    ids.forEach(function (id) {
+      var input = document.getElementById(id);
+      var value = input.value.trim();
+      var good = value.length > 0;
 
-        if (id === 'mn') {
-            good = /^[6-9]\d{9}$/.test(v);
-        }
+      if (id === 'mn') {
+        good = /^[6-9]\d{9}$/.test(value);
+      }
 
-        i.parentElement.classList.toggle('bad', !good);
+      input.parentElement.classList.toggle('bad', !good);
 
-        if (!good) ok = false;
+      if (!good) valid = false;
     });
 
-    if (!ok) {
-        form.querySelector('.bad input, .bad select').focus();
-        return;
+    if (!valid) {
+      form.querySelector('.bad input, .bad select').focus();
+      return;
     }
 
-    var student = document.getElementById('sn').value;
-    var parent = document.getElementById('pn').value;
-    var mobile = document.getElementById('mn').value;
+    var student = document.getElementById('sn').value.trim();
+    var parent = document.getElementById('pn').value.trim();
+    var mobile = document.getElementById('mn').value.trim();
     var studentClass = document.getElementById('cl').value;
-    var course = document.getElementById('co').value;
-    var batch = document.getElementById('ba').value;
-    var message = document.getElementById('ms').value;
+    var course = document.getElementById('co').value || 'Not selected';
+    var batch = document.getElementById('ba').value || 'Not selected';
+    var message = document.getElementById('ms').value.trim() || 'None';
 
     var whatsappMessage =
-        "Hello Decoder Classes!\n\n" +
-        "*New Admission Enquiry*\n\n" +
-        "Student Name: " + student + "\n" +
-        "Parent Name: " + parent + "\n" +
-        "Mobile: " + mobile + "\n" +
-        "Class: " + studentClass + "\n" +
-        "Course: " + (course || "Not selected") + "\n" +
-        "Preferred Batch: " + (batch || "Not selected") + "\n" +
-        "Message: " + (message || "None") + "\n\n" +
-        "I would like to know more about admission.";
+      'Hello Decoder Classes!\n\n' +
+      '*New Admission Enquiry*\n\n' +
+      'Student Name: ' + student + '\n' +
+      'Parent Name: ' + parent + '\n' +
+      'Mobile Number: ' + mobile + '\n' +
+      'Class: ' + studentClass + '\n' +
+      'Course: ' + course + '\n' +
+      'Preferred Batch: ' + batch + '\n' +
+      'Message: ' + message + '\n\n' +
+      'I would like to know more about admission and counselling.';
 
     var whatsappURL =
-        "https://wa.me/919999999999?text=" +
-        encodeURIComponent(whatsappMessage);
+      'https://wa.me/919999999999?text=' +
+      encodeURIComponent(whatsappMessage);
 
-    window.location.href = whatsappURL;
-});
+    window.open(whatsappURL, '_blank');
+  });
 
-document.getElementById('mn').addEventListener('input', function() {
-    this.value = this.value.replace(/\D/g, '');
-});
-});
+  /* Mobile number validation */
+  document.getElementById('mn').addEventListener(
+    'input',
+    function () {
+      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+      this.parentElement.classList.remove('bad');
+    }
+  );
+
+  /* Remove validation errors while typing */
+  ['sn', 'pn', 'cl'].forEach(function (id) {
+    var input = document.getElementById(id);
+
+    input.addEventListener('input', function () {
+      input.parentElement.classList.remove('bad');
+    });
+
+    input.addEventListener('change', function () {
+      input.parentElement.classList.remove('bad');
+    });
+  });
+
+})();
 </script>
 </body>
 </html>
