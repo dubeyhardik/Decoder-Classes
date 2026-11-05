@@ -845,21 +845,63 @@ footer ul a:hover{color:#fff;padding-left:4px}
   });
 
   /* Enquiry form (demo: client-side validation only) */
-  var form=document.getElementById('form');
-  form.addEventListener('submit',function(e){
+  /* Enquiry form → WhatsApp */
+var form = document.getElementById('form');
+
+form.addEventListener('submit', function(e) {
     e.preventDefault();
-    var ok=true;
-    ['sn','pn','mn','cl'].forEach(function(id){
-      var i=document.getElementById(id), v=i.value.trim(), good=!!v;
-      if(id==='mn') good=/^[6-9]\d{9}$/.test(v);
-      i.parentElement.classList.toggle('bad',!good);
-      if(!good) ok=false;
+
+    var ok = true;
+
+    ['sn', 'pn', 'mn', 'cl'].forEach(function(id) {
+        var i = document.getElementById(id);
+        var v = i.value.trim();
+        var good = !!v;
+
+        if (id === 'mn') {
+            good = /^[6-9]\d{9}$/.test(v);
+        }
+
+        i.parentElement.classList.toggle('bad', !good);
+
+        if (!good) ok = false;
     });
-    if(ok){ form.classList.add('sent'); }
-    else { form.querySelector('.bad input, .bad select').focus(); }
-  });
-  document.getElementById('mn').addEventListener('input',function(){ this.value=this.value.replace(/\D/g,''); });
-})();
+
+    if (!ok) {
+        form.querySelector('.bad input, .bad select').focus();
+        return;
+    }
+
+    // Collect form details
+    var student = document.getElementById('sn').value.trim();
+    var parent = document.getElementById('pn').value.trim();
+    var mobile = document.getElementById('mn').value.trim();
+    var studentClass = document.getElementById('cl').value;
+    var course = document.getElementById('co').value || 'Not selected';
+    var batch = document.getElementById('ba').value || 'Not selected';
+    var message = document.getElementById('ms').value.trim() || 'None';
+
+    // WhatsApp message
+    var text = 
+`Hello Decoder Classes!
+
+I want to enquire about admission.
+
+Student Name: ${student}
+Parent Name: ${parent}
+Mobile Number: ${mobile}
+Class: ${studentClass}
+Course: ${course}
+Preferred Batch: ${batch}
+Message: ${message}
+
+Please contact me regarding admission.`;
+
+    // Redirect to WhatsApp
+    var whatsappURL = 'https://wa.me/917490913399?text=' + encodeURIComponent(text);
+
+    window.location.href = whatsappURL;
+});
 </script>
 </body>
 </html>
