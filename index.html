@@ -885,28 +885,23 @@ footer ul a:hover{color:#fff;padding-left:4px}
   <a class="call" href="tel:+919824160664"><svg><use href="#i-phone"/></svg>Call Now</a>
   <a class="wa" href="https://wa.me/919824160664"><svg><use href="#i-wa"/></svg>WhatsApp</a>
 </nav>
-<script>
+
+    <script>
 (function () {
+
   var reduce = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
   ).matches;
 
-  /* Hero headline animation */
-  var h1 = document.querySelector('.hero h1');
-
-  h1.innerHTML =
-    'Decode Your <span class="hl" id="decode">Potential</span>.' +
-    '<span class="fut">Build Your Future.</span>';
-
-  h1.setAttribute(
-    'aria-label',
-    'Decode Your Potential. Build Your Future.'
-  );
+  /* =========================
+     HERO HEADLINE ANIMATION
+  ========================= */
 
   var el = document.getElementById('decode');
   var final = 'Potential';
 
-  if (!reduce) {
+  if (el && !reduce) {
+
     var chars = '01{}<>/=+∑π√∫%#';
     var start = null;
     var duration = 1100;
@@ -914,6 +909,7 @@ footer ul a:hover{color:#fff;padding-left:4px}
     el.style.minWidth = el.offsetWidth + 'px';
 
     function frame(t) {
+
       if (!start) start = t;
 
       var p = Math.min((t - start) / duration, 1);
@@ -938,13 +934,19 @@ footer ul a:hover{color:#fff;padding-left:4px}
     requestAnimationFrame(frame);
   }
 
-  /* Navigation */
+
+  /* =========================
+     NAVIGATION
+  ========================= */
+
   var nav = document.getElementById('nav');
   var burger = document.getElementById('burger');
   var menu = document.getElementById('menu');
 
   function onScroll() {
-    nav.classList.toggle('scrolled', window.scrollY > 30);
+    if (nav) {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+    }
   }
 
   onScroll();
@@ -954,6 +956,9 @@ footer ul a:hover{color:#fff;padding-left:4px}
   });
 
   function setMenu(open) {
+
+    if (!menu || !nav || !burger) return;
+
     menu.classList.toggle('show', open);
     nav.classList.toggle('open', open);
 
@@ -964,24 +969,35 @@ footer ul a:hover{color:#fff;padding-left:4px}
     );
   }
 
-  burger.addEventListener('click', function () {
-    setMenu(!menu.classList.contains('show'));
-  });
+  if (burger) {
+    burger.addEventListener('click', function () {
+      setMenu(!menu.classList.contains('show'));
+    });
+  }
 
-  menu.addEventListener('click', function (e) {
-    if (e.target.tagName === 'A') {
+  if (menu) {
+    menu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        setMenu(false);
+      }
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
       setMenu(false);
     }
   });
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') setMenu(false);
-  });
 
-  /* Count-up animation */
+  /* =========================
+     COUNT UP ANIMATION
+  ========================= */
+
   var counters = document.querySelectorAll('[data-count]');
 
   function run(n) {
+
     var end = parseFloat(n.dataset.count);
     var dec = parseInt(n.dataset.dec || 0, 10);
     var suffix = n.dataset.suffix || '';
@@ -995,6 +1011,7 @@ footer ul a:hover{color:#fff;padding-left:4px}
     var duration = 1400;
 
     function step(t) {
+
       if (!start) start = t;
 
       var p = Math.min((t - start) / duration, 1);
@@ -1012,25 +1029,46 @@ footer ul a:hover{color:#fff;padding-left:4px}
   }
 
   if ('IntersectionObserver' in window) {
+
     var io = new IntersectionObserver(function (entries) {
+
       entries.forEach(function (entry) {
+
         if (entry.isIntersecting) {
           run(entry.target);
           io.unobserve(entry.target);
         }
+
       });
+
     }, { threshold: 0.6 });
 
     counters.forEach(function (counter) {
       io.observe(counter);
     });
+
+  } else {
+
+    counters.forEach(run);
+
   }
 
-  /* Testimonial slider */
+
+  /* =========================
+     TESTIMONIAL SLIDER
+  ========================= */
+
   var track = document.getElementById('track');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
 
   function slide(direction) {
+
+    if (!track) return;
+
     var card = track.querySelector('.tcard');
+
+    if (!card) return;
 
     track.scrollBy({
       left: direction * (card.offsetWidth + 22),
@@ -1038,46 +1076,29 @@ footer ul a:hover{color:#fff;padding-left:4px}
     });
   }
 
-  document.getElementById('prev').addEventListener(
-    'click',
-    function () {
+  if (prev) {
+    prev.addEventListener('click', function () {
       slide(-1);
-    }
-  );
+    });
+  }
 
-  document.getElementById('next').addEventListener(
-    'click',
-    function () {
+  if (next) {
+    next.addEventListener('click', function () {
       slide(1);
-    }
-  );
-
-  /* Gallery filter */
-  var filters = document.getElementById('filters');
-
-  filters.addEventListener('click', function (e) {
-    var button = e.target.closest('button');
-
-    if (!button) return;
-
-    filters.querySelectorAll('button').forEach(function (b) {
-      b.classList.toggle('on', b === button);
     });
+  }
 
-    var filter = button.dataset.f;
 
-    document.querySelectorAll('#gal .g').forEach(function (item) {
-      item.classList.toggle(
-        'hide',
-        filter !== 'all' && item.dataset.c !== filter
-      );
-    });
-  });
+  /* =========================
+     FAQ ACCORDION
+  ========================= */
 
-  /* FAQ accordion */
-  document.getElementById('acc').addEventListener(
-    'click',
-    function (e) {
+  var acc = document.getElementById('acc');
+
+  if (acc) {
+
+    acc.addEventListener('click', function (e) {
+
       var button = e.target.closest('button');
 
       if (!button) return;
@@ -1086,77 +1107,131 @@ footer ul a:hover{color:#fff;padding-left:4px}
       var open = !qa.classList.contains('open');
 
       qa.classList.toggle('open', open);
+
       button.setAttribute('aria-expanded', open);
-    }
-  );
 
-  /* WhatsApp enquiry form */
-  var form = document.getElementById('form');
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    var ids = ['sn', 'pn', 'mn', 'cl'];
-    var valid = true;
-
-    ids.forEach(function (id) {
-      var input = document.getElementById(id);
-      var value = input.value.trim();
-      var good = value.length > 0;
-
-      if (id === 'mn') {
-        good = /^[6-9]\d{9}$/.test(value);
-      }
-
-      input.parentElement.classList.toggle('bad', !good);
-
-      if (!good) valid = false;
     });
 
-    if (!valid) {
-      form.querySelector('.bad input, .bad select').focus();
-      return;
-    }
+  }
 
-    var student = document.getElementById('sn').value.trim();
-    var parent = document.getElementById('pn').value.trim();
-    var mobile = document.getElementById('mn').value.trim();
-    var studentClass = document.getElementById('cl').value;
-    var course = document.getElementById('co').value || 'Not selected';
-    var batch = document.getElementById('ba').value || 'Not selected';
-    var message = document.getElementById('ms').value.trim() || 'None';
 
-    var whatsappMessage =
-      'Hello Decoder Classes!\n\n' +
-      '*New Admission Enquiry*\n\n' +
-      'Student Name: ' + student + '\n' +
-      'Parent Name: ' + parent + '\n' +
-      'Mobile Number: ' + mobile + '\n' +
-      'Class: ' + studentClass + '\n' +
-      'Course: ' + course + '\n' +
-      'Preferred Batch: ' + batch + '\n' +
-      'Message: ' + message + '\n\n' +
-      'I would like to know more about admission and counselling.';
+  /* =========================
+     WHATSAPP ENQUIRY FORM
+  ========================= */
 
-    var whatsappURL =
-      'https://wa.me/919824160664?text=' +
-      encodeURIComponent(whatsappMessage);
+  var form = document.getElementById('form');
 
-    window.open(whatsappURL, '_blank');
-  });
+  if (form) {
 
-  /* Mobile number validation */
-  document.getElementById('mn').addEventListener(
-    'input',
-    function () {
-      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+    form.addEventListener('submit', function (e) {
+
+      e.preventDefault();
+
+      var ids = ['sn', 'pn', 'mn', 'cl'];
+      var valid = true;
+
+      ids.forEach(function (id) {
+
+        var input = document.getElementById(id);
+        var value = input.value.trim();
+
+        var good = value.length > 0;
+
+        if (id === 'mn') {
+          good = /^[6-9]\d{9}$/.test(value);
+        }
+
+        input.parentElement.classList.toggle('bad', !good);
+
+        if (!good) valid = false;
+
+      });
+
+      if (!valid) {
+
+        var firstError = form.querySelector('.bad input, .bad select');
+
+        if (firstError) firstError.focus();
+
+        return;
+      }
+
+
+      /* GET FORM DATA */
+
+      var student = document.getElementById('sn').value.trim();
+
+      var parent = document.getElementById('pn').value.trim();
+
+      var mobile = document.getElementById('mn').value.trim();
+
+      var studentClass = document.getElementById('cl').value;
+
+      var course = document.getElementById('co').value || 'Not selected';
+
+      var batch = document.getElementById('ba').value || 'Not selected';
+
+      var message = document.getElementById('ms').value.trim() || 'None';
+
+
+      /* CREATE WHATSAPP MESSAGE */
+
+      var whatsappMessage =
+        'Hello Decoder Classes!\n\n' +
+        '*NEW ADMISSION ENQUIRY*\n\n' +
+        'Student Name: ' + student + '\n' +
+        'Parent Name: ' + parent + '\n' +
+        'Mobile Number: ' + mobile + '\n' +
+        'Class: ' + studentClass + '\n' +
+        'Course: ' + course + '\n' +
+        'Preferred Batch: ' + batch + '\n' +
+        'Message: ' + message + '\n\n' +
+        'I would like to know more about admission and counselling.';
+
+
+      /* WHATSAPP REDIRECT */
+
+      var whatsappURL =
+        'https://wa.me/919824160664?text=' +
+        encodeURIComponent(whatsappMessage);
+
+      window.location.href = whatsappURL;
+
+    });
+
+  }
+
+
+  /* =========================
+     MOBILE NUMBER VALIDATION
+  ========================= */
+
+  var mobileInput = document.getElementById('mn');
+
+  if (mobileInput) {
+
+    mobileInput.addEventListener('input', function () {
+
+      this.value = this.value
+        .replace(/\D/g, '')
+        .slice(0, 10);
+
       this.parentElement.classList.remove('bad');
-    }
-  );
 
-  /* Remove validation errors while typing */
+    });
+
+  }
+
+
+  /* =========================
+     REMOVE VALIDATION ERRORS
+  ========================= */
+
   ['sn', 'pn', 'cl'].forEach(function (id) {
+
     var input = document.getElementById(id);
+
+    if (!input) return;
 
     input.addEventListener('input', function () {
       input.parentElement.classList.remove('bad');
@@ -1165,7 +1240,9 @@ footer ul a:hover{color:#fff;padding-left:4px}
     input.addEventListener('change', function () {
       input.parentElement.classList.remove('bad');
     });
+
   });
+
 
 })();
 </script>
